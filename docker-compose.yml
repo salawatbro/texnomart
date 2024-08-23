@@ -1,0 +1,55 @@
+services:
+    db:
+        image: postgres:latest
+        restart: always
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "5432:5432"
+        volumes:
+            - database:/var/lib/postgresql/data
+        networks:
+            - texnomart
+    rabbitmq:
+        image: rabbitmq:3-management
+        restart: always
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        networks:
+            - texnomart
+    app:
+        build:
+            context: .
+            dockerfile: docker/app/Dockerfile
+        volumes:
+            - .:/var/www/html
+        expose:
+            - "9000"
+        depends_on:
+            - db
+        networks:
+            - texnomart
+    nginx:
+        restart: always
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        depends_on:
+            - app
+        volumes:
+            - ./:/var/www/html
+            - ./docker/logs/nginx/:/var/log/nginx
+            - ./docker/nginx/sites/:/etc/nginx/sites-available
+            - ./:/var/www/html
+        ports:
+            - "433:443"
+            - "8080:80"
+        networks:
+            - texnomart
+networks:
+    texnomart:
+volumes:
+    database:
