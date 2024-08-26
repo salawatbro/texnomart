@@ -75,7 +75,6 @@ RUN . ~/.bashrc
 
 RUN echo "* * * * * www-data /usr/local/bin/php /var/www/html/artisan schedule:run >> /dev/null 2>&1"  >> /etc/cron.d/laravel-scheduler
 RUN chmod 0644 /etc/cron.d/laravel-scheduler
-
 #
 #--------------------------------------------------------------------------
 # Final Touch
@@ -91,4 +90,5 @@ RUN usermod -u 1000 www-data
 WORKDIR /var/www/html
 
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["sh", "-c", "cron && php-fpm"]
+
