@@ -8,7 +8,8 @@ Route::post('/send-otp-code', [Controllers\OTPController::class, 'sendOTPCode'])
 Route::post('/check-user-exists', [Controllers\UserController::class, 'checkUserExists']);
 Route::get('/products', [Controllers\ProductController::class, 'index']);
 Route::post('/orders/calculate', [Controllers\OrderController::class, 'calculateOrderPrice']);
-
+Route::get('/payment-types', [Controllers\PaymentController::class, 'indexPaymentTypes']);
+Route::get('/delivery-types', [Controllers\DeliveryController::class, 'index']);
 Route::middleware('auth:api')->group(function () {
     Route::get('/getme', [Controllers\UserController::class, 'getMe']);
     Route::post('/payment/{uuid}', [Controllers\PaymentController::class, 'pay'])->name('payment');

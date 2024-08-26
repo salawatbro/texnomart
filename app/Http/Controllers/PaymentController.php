@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PaymentResource;
+use App\Services\Payment\IndexPaymentTypesService;
 use App\Services\Payment\PaymentService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -22,5 +23,13 @@ class PaymentController extends Controller
             return $this->ResponseError($e->getMessage());
         }
         return new PaymentResource($data);
+    }
+
+    public function indexPaymentTypes(IndexPaymentTypesService $service)
+    {
+        $data = $service->execute([]);
+        return response()->json([
+            'data' => $data
+        ]);
     }
 }

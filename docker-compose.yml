@@ -1,5 +1,6 @@
 services:
     db:
+        container_name: 'db'
         image: postgres:latest
         restart: always
         environment:
@@ -13,6 +14,7 @@ services:
         networks:
             - texnomart
     rabbitmq:
+        container_name: 'rabbitmq'
         image: rabbitmq:3-management
         restart: always
         ports:
@@ -21,6 +23,7 @@ services:
         networks:
             - texnomart
     app:
+        container_name: 'app'
         build:
             context: .
             dockerfile: docker/app/Dockerfile
@@ -35,6 +38,7 @@ services:
         networks:
             - texnomart
     nginx:
+        container_name: 'nginx'
         restart: always
         build:
             context: .
